@@ -126,7 +126,8 @@ func (d *textDecoder) Decode(v *dto.MetricFamily) error {
 		// No cached metric families, read everything and parse metrics.
 		fams, err := d.p.TextToMetricFamilies(d.r)
 		if err != nil {
-			return err
+			// ignore err
+			//return err
 		}
 		if len(fams) == 0 {
 			return io.EOF
