@@ -15,12 +15,9 @@ package expfmt
 
 import (
 	"fmt"
-	"io"
-	"net/http"
-
 	"github.com/golang/protobuf/proto"
 	"github.com/matttproud/golang_protobuf_extensions/pbutil"
-	"github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg"
+	"io"
 
 	dto "github.com/prometheus/client_model/go"
 )
@@ -59,52 +56,52 @@ func (ec encoderCloser) Close() error {
 // Prometheus text format). This function will never negotiate FmtOpenMetrics,
 // as the support is still experimental. To include the option to negotiate
 // FmtOpenMetrics, use NegotiateOpenMetrics.
-func Negotiate(h http.Header) Format {
-	for _, ac := range goautoneg.ParseAccept(h.Get(hdrAccept)) {
-		ver := ac.Params["version"]
-		if ac.Type+"/"+ac.SubType == ProtoType && ac.Params["proto"] == ProtoProtocol {
-			switch ac.Params["encoding"] {
-			case "delimited":
-				return FmtProtoDelim
-			case "text":
-				return FmtProtoText
-			case "compact-text":
-				return FmtProtoCompact
-			}
-		}
-		if ac.Type == "text" && ac.SubType == "plain" && (ver == TextVersion || ver == "") {
-			return FmtText
-		}
-	}
-	return FmtText
-}
+//func Negotiate(h http.Header) Format {
+//	for _, ac := range goautoneg.ParseAccept(h.Get(hdrAccept)) {
+//		ver := ac.Params["version"]
+//		if ac.Type+"/"+ac.SubType == ProtoType && ac.Params["proto"] == ProtoProtocol {
+//			switch ac.Params["encoding"] {
+//			case "delimited":
+//				return FmtProtoDelim
+//			case "text":
+//				return FmtProtoText
+//			case "compact-text":
+//				return FmtProtoCompact
+//			}
+//		}
+//		if ac.Type == "text" && ac.SubType == "plain" && (ver == TextVersion || ver == "") {
+//			return FmtText
+//		}
+//	}
+//	return FmtText
+//}
 
 // NegotiateIncludingOpenMetrics works like Negotiate but includes
 // FmtOpenMetrics as an option for the result. Note that this function is
 // temporary and will disappear once FmtOpenMetrics is fully supported and as
 // such may be negotiated by the normal Negotiate function.
-func NegotiateIncludingOpenMetrics(h http.Header) Format {
-	for _, ac := range goautoneg.ParseAccept(h.Get(hdrAccept)) {
-		ver := ac.Params["version"]
-		if ac.Type+"/"+ac.SubType == ProtoType && ac.Params["proto"] == ProtoProtocol {
-			switch ac.Params["encoding"] {
-			case "delimited":
-				return FmtProtoDelim
-			case "text":
-				return FmtProtoText
-			case "compact-text":
-				return FmtProtoCompact
-			}
-		}
-		if ac.Type == "text" && ac.SubType == "plain" && (ver == TextVersion || ver == "") {
-			return FmtText
-		}
-		if ac.Type+"/"+ac.SubType == OpenMetricsType && (ver == OpenMetricsVersion || ver == "") {
-			return FmtOpenMetrics
-		}
-	}
-	return FmtText
-}
+//func NegotiateIncludingOpenMetrics(h http.Header) Format {
+//	for _, ac := range goautoneg.ParseAccept(h.Get(hdrAccept)) {
+//		ver := ac.Params["version"]
+//		if ac.Type+"/"+ac.SubType == ProtoType && ac.Params["proto"] == ProtoProtocol {
+//			switch ac.Params["encoding"] {
+//			case "delimited":
+//				return FmtProtoDelim
+//			case "text":
+//				return FmtProtoText
+//			case "compact-text":
+//				return FmtProtoCompact
+//			}
+//		}
+//		if ac.Type == "text" && ac.SubType == "plain" && (ver == TextVersion || ver == "") {
+//			return FmtText
+//		}
+//		if ac.Type+"/"+ac.SubType == OpenMetricsType && (ver == OpenMetricsVersion || ver == "") {
+//			return FmtOpenMetrics
+//		}
+//	}
+//	return FmtText
+//}
 
 // NewEncoder returns a new encoder based on content type negotiation. All
 // Encoder implementations returned by NewEncoder also implement Closer, and
