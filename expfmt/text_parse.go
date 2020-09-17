@@ -482,8 +482,9 @@ func (p *TextParser) startTimestamp() stateFn {
 // p.currentByte) is the first byte of the docstring after 'HELP'.
 func (p *TextParser) readingHelp() stateFn {
 	if p.currentMF.Help != nil {
-		p.parseError(fmt.Sprintf("second HELP line for metric name %q", p.currentMF.GetName()))
-		return nil
+		// ignore error
+		//p.parseError(fmt.Sprintf("second HELP line for metric name %q", p.currentMF.GetName()))
+		//return nil
 	}
 	// Rest of line is the docstring.
 	if p.readTokenUntilNewline(true); p.err != nil {
