@@ -497,8 +497,9 @@ func (p *TextParser) readingHelp() stateFn {
 // p.currentByte) is the first byte of the type hint after 'HELP'.
 func (p *TextParser) readingType() stateFn {
 	if p.currentMF.Type != nil {
-		p.parseError(fmt.Sprintf("second TYPE line for metric name %q, or TYPE reported after samples", p.currentMF.GetName()))
-		return nil
+		// ignore error
+		//p.parseError(fmt.Sprintf("second TYPE line for metric name %q, or TYPE reported after samples", p.currentMF.GetName()))
+		//return nil
 	}
 	// Rest of line is the type.
 	if p.readTokenUntilNewline(false); p.err != nil {
